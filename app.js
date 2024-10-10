@@ -1,3 +1,4 @@
+const morgan = require("morgan");
 const express = require("express");
 const usersRoute = require("./routes/usersRoute");
 const carsRoute = require("./routes/carsRoute");
@@ -7,8 +8,36 @@ const driverRoutes = require("./routes/driverRoute");
 const app = express();
 const port = 3000;
 
-// Reading json from body (client)
+// Middleware Reading json from body (client)
 app.use(express.json());
+
+// Middleware Logging: logging !! thir party package
+app.use(morgan());
+
+// diatas routes agar kepanggi untuk semua
+// pemakaian di proses upload file
+// midhleware yang dibuat sendiri
+app.use((req, res, next) => {
+  console.log('incoming request ...')
+  // batter loging
+  // penengah untuk lanjut
+  next();
+})
+
+//logging basic
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString()
+  // batter loging
+  // penengah untuk lanjut
+  next();
+})
+
+app.use((req, res, next) => {
+  req.username = "FSW2"
+  // batter loging
+  // penengah untuk lanjut
+  next();
+})
 
 // Health Check
 app.get("/", async (req, res) => {
